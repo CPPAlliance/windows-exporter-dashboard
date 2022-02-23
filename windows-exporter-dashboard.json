@@ -60,9 +60,9 @@
       }
     ]
   },
-  "description": "Windows Exporter Dashboard Created By Ismaeil Rasoulivand with love",
+  "description": "Windows Exporter Dashboard",
   "editable": true,
-  "gnetId": 14694,
+  "gnetId": 15794,
   "graphTooltip": 1,
   "id": null,
   "iteration": 1625682631492,
@@ -1027,7 +1027,7 @@
         },
         "overrides": []
       },
-      "fill": 0,
+      "fill": 1,
       "fillGradient": 0,
       "gridPos": {
         "h": 8,
@@ -1050,7 +1050,7 @@
         "values": true
       },
       "lines": true,
-      "linewidth": 3,
+      "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
       "percentage": false,
@@ -1060,98 +1060,38 @@
       "renderer": "flot",
       "seriesOverrides": [],
       "spaceLength": 10,
-      "stack": false,
+      "stack": true,
       "steppedLine": false,
       "targets": [
-        {
-          "application": {
-            "filter": ""
-          },
-          "expr": "windows_cs_physical_memory_bytes{instance=~\"$server\"}",
-          "format": "time_series",
-          "functions": [],
-          "group": {
-            "filter": ""
-          },
-          "hide": false,
-          "host": {
-            "filter": ""
-          },
-          "intervalFactor": 1,
-          "item": {
-            "filter": ""
-          },
-          "legendFormat": "Physical memory",
-          "metric": "mysql_global_status_questions",
-          "mode": 0,
-          "options": {
-            "showDisabledItems": false
-          },
-          "refId": "B",
-          "step": 5
-        },
-        {
-          "application": {
-            "filter": ""
-          },
-          "expr": "windows_os_physical_memory_free_bytes{instance=~\"$server\"}",
-          "format": "time_series",
-          "functions": [],
-          "group": {
-            "filter": ""
-          },
-          "hide": false,
-          "host": {
-            "filter": ""
-          },
-          "intervalFactor": 1,
-          "item": {
-            "filter": ""
-          },
-          "legendFormat": "Free physical memory",
-          "metric": "mysql_global_status_questions",
-          "mode": 0,
-          "options": {
-            "showDisabledItems": false
-          },
-          "refId": "C",
-          "step": 5
-        },
-        {
-          "application": {
-            "filter": ""
-          },
-          "expr": "windows_os_virtual_memory_bytes{instance=~\"$server\"}",
-          "format": "time_series",
-          "functions": [],
-          "group": {
-            "filter": ""
-          },
-          "hide": false,
-          "host": {
-            "filter": ""
-          },
-          "intervalFactor": 1,
-          "item": {
-            "filter": ""
-          },
-          "legendFormat": "Virtual memory",
-          "metric": "mysql_global_status_questions",
-          "mode": 0,
-          "options": {
-            "showDisabledItems": false
-          },
-          "refId": "A",
-          "step": 5
-        },
-        {
-          "expr": "windows_os_virtual_memory_free_bytes{instance=~\"$server\"}",
-          "format": "time_series",
-          "intervalFactor": 1,
-          "legendFormat": "Free virtual memory",
-          "refId": "D"
-        }
-      ],
+            {
+              "expr": "(\n  windows_cs_physical_memory_bytes{job=\"node\", instance=\"$server\"}\n-\n  windows_os_physical_memory_free_bytes{job=\"node\", instance=\"$server\"}\n)\n",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "memory used",
+              "refId": "A"
+            },
+            {
+              "expr": "windows_os_physical_memory_free_bytes{job=\"node\", instance=\"$server\"}",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "memory free",
+              "refId": "B"
+            },
+	    {
+              "expr": "(\n  windows_os_paging_limit_bytes{job=\"node\", instance=\"$server\"}\n-\n  windows_os_paging_free_bytes{job=\"node\", instance=\"$server\"}\n)\n",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "paging used",
+              "refId": "C"
+            },
+            {
+              "expr": "windows_os_paging_free_bytes{job=\"node\", instance=\"$server\"}",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "paging free",
+              "refId": "D"
+            }
+          ],
       "thresholds": [],
       "timeFrom": null,
       "timeRegions": [],
@@ -2403,6 +2343,25 @@
   "templating": {
     "list": [
       {
+        "current": {
+          "selected": false,
+          "text": "default",
+          "value": "default"
+        },
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
+        "label": "datasource",
+        "multi": false,
+        "name": "DS_PROMETHEUS",
+        "options": [],
+        "query": "prometheus",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "type": "datasource"
+      },
+      {
         "auto": false,
         "auto_count": 500,
         "auto_min": "30s",
@@ -2451,7 +2410,7 @@
     ]
   },
   "time": {
-    "from": "now-1h",
+    "from": "now-24h",
     "to": "now"
   },
   "timepicker": {
@@ -2481,6 +2440,6 @@
   },
   "timezone": "browser",
   "title": "Windows Exporter Dashboard",
-  "uid": "7UlnHoGZz",
+  "uid": "7UlnHoGZy",
   "version": 47
 }
